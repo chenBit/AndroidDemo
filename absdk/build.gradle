@@ -1,0 +1,38 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 27
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            zipAlignEnabled true
+            proguardFiles 'proguard-rules.pro'
+            buildConfigField "boolean", "SHOW_CONSOLE_LOG", "false"
+            buildConfigField "boolean", "WRITE_LOG", "false"
+        }
+        debug {
+            minifyEnabled false
+            zipAlignEnabled false
+            buildConfigField "boolean", "SHOW_CONSOLE_LOG", "true"
+            buildConfigField "boolean", "WRITE_LOG", "true"
+        }
+    }
+
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+}

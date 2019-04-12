@@ -1,0 +1,12 @@
+<resources>
+
+    <!--<style name="Customer_Dialog_theme" parent="@android:style/Theme.Dialog">-->
+        <!--<item name="android:windowFrame">@null</item>-->
+        <!--<item name="android:windowIsFloating">false</item>-->
+        <!--<item name="android:windowIsTranslucent">false</item>-->
+        <!--<item name="android:windowNoTitle">true</item>-->
+        <!--<item name="android:windowBackground">#00000000</item>-->
+        <!--<item name="android:backgroundDimEnabled">false</item>-->
+        <!--<item name="android:backgroundDimAmount">1</item>-->
+    <!--</style>-->
+</resources>

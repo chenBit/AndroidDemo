@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context="com.chenbit.demo.test.event.EventTestActivity">
+
+    <com.chenbit.demo.test.event.MyViewGroup
+        android:layout_width="100dp"
+        android:layout_height="100dp">
+
+        <com.chenbit.demo.test.event.MyView
+            android:id="@+id/btnTest"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="#ccc"
+            android:paddingBottom="40dp"
+            android:paddingLeft="20dp"
+            app:exampleColor="#33b5e5"
+            app:exampleDimension="24sp"
+            app:exampleDrawable="@android:drawable/ic_menu_add"
+            app:exampleString="Hello, MyView"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="48dp" />
+    </com.chenbit.demo.test.event.MyViewGroup>
+
+</LinearLayout>
