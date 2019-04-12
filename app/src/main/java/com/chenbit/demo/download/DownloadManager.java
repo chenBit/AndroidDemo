@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.os.Process;
 import android.util.Log;
 
 import com.chenbit.demo.app.DemoApp;
@@ -39,6 +40,7 @@ public class DownloadManager implements DownloadService.DownloadListener {
             synchronized (DownloadManager.class) {
                 if (mInstance == null) {
                     mInstance = new DownloadManager();
+                    Log.e(TAG,"===DownloadManager===" + Process.myPid());
                 }
             }
         }
@@ -50,8 +52,8 @@ public class DownloadManager implements DownloadService.DownloadListener {
         mContext.bindService(intent, new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-                DownloadService.DownloadBinder binder = (DownloadService.DownloadBinder) service;
-                binder.setDownloadListener(DownloadManager.this);
+                DownloadService downloadService = ((DownloadService.DownloadBinder) service).getService();
+                downloadService.setDownloadListener(DownloadManager.this);
                 Log.e(TAG, "===onServiceConnected===");
             }
 

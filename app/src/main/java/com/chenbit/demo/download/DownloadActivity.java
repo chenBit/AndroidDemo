@@ -1,5 +1,6 @@
 package com.chenbit.demo.download;
 
+import android.os.Process;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
@@ -39,11 +40,13 @@ public class DownloadActivity extends BaseActivity implements DownloadManager.On
         mAppInfos.add(new AppInfo("TeamViewer", "https://dl.tvcdn.de/download/TeamViewer_Setup.exe"));
         mAppInfos.add(new AppInfo("WeChat.apk", "http://dldir1.qq.com/weixin/android/weixin666android1300.apk"));
         mAppInfos.add(new AppInfo("美图秀秀.apk", "http://gdown.baidu.com/data/wisegame/c75bfe509e9c787d/meituxiuxiu_7400.apk"));
+        mAppInfos.add(new AppInfo("FFF.APK", "https://emm.abchina.com/data/app/mdm%2F1%2Fb%2F9e95274e-bf50-4de8-9f19-b17a6e81736f.apk"));
         //
         mAdapter = new DownloadAdapter(this, mAppInfos);
         lvDownload.setAdapter(mAdapter);
 
         DownloadManager.getInstance().setUIDownloadListener(this);
+        Log.e(TAG, "===DownloadActivity===" + Process.myPid());
     }
 
     @Override
@@ -84,14 +87,14 @@ public class DownloadActivity extends BaseActivity implements DownloadManager.On
     }
 
     private void updateProgress(int positionInAdapter, int progress) {
-        Log.e(TAG, "===updateProgress===" + progress + "==positionInAdapter==" + positionInAdapter + "==firstVisiblePosition==" + lvDownload.getFirstVisiblePosition());
+//        Log.e(TAG, "===updateProgress===" + progress + "==positionInAdapter==" + positionInAdapter + "==firstVisiblePosition==" + lvDownload.getFirstVisiblePosition());
         int position = positionInAdapter - lvDownload.getFirstVisiblePosition();
         ProgressBar pb = lvDownload.getChildAt(position).findViewById(R.id.pb);
         pb.setProgress(progress);
     }
 
     private void updateStatus(int positionInAdapter, int status) {
-        Log.e(TAG, "===updateStatus===" + status + "==positionInAdapter==" + positionInAdapter + "==firstVisiblePosition==" + lvDownload.getFirstVisiblePosition());
+//        Log.e(TAG, "===updateStatus===" + status + "==positionInAdapter==" + positionInAdapter + "==firstVisiblePosition==" + lvDownload.getFirstVisiblePosition());
         int position = positionInAdapter - lvDownload.getFirstVisiblePosition();
         Button btnStatus = lvDownload.getChildAt(position).findViewById(R.id.btnStatus);
         mAdapter.setContentByStatus(status, btnStatus);

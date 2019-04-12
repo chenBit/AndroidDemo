@@ -26,7 +26,6 @@ public class NetworkUtils {
      * @return
      */
     public static int getNetworkState(Context context) {
-        // 得到连接管理器对象
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {

@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 往sdcard中写入数据的权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
 
     <application
         android:name=".app.DemoApp"
@@ -17,7 +18,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
 
-        <!--主界面-->
+        <!-- 主界面 -->
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,12 +27,46 @@
             </intent-filter>
         </activity>
 
-        <!--下载界面-->
-        <activity android:name=".download.DownloadActivity"/>
+        <!-- 下载界面 -->
+        <activity
+            android:name=".download.DownloadActivity"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-        <!--下载服务-->
-        <service android:name=".download.DownloadService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
+        <!-- 下载服务 -->
+        <service
+            android:name=".download.DownloadService"/>
+
+        <receiver android:name=".receiver.DpmReceiver">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin_receiver" />
+
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+                <action android:name="android.app.action.PROFILE_PROVISIONING_COMPLETE" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.app.action.PROFILE_OWNER_CHANGED" />
+                <action android:name="android.app.action.DEVICE_OWNER_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".test.event.EventTestActivity" />
+        <activity
+            android:name=".ui.KeepAliveActivity"
+            android:excludeFromRecents="true"
+            android:theme="@style/LiveStyle" />
+
+        <service
+            android:name=".test.binder.TestBinderService"
+            android:enabled="true"
+            android:process=":remote"
+            android:exported="true"/>
     </application>
 
 </manifest>

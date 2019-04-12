@@ -21,7 +21,6 @@ public class FileUtils {
      */
     private static boolean copyFile(File srcFile, File destFile) {
         try {
-
             long startTime = System.currentTimeMillis();
             Log.e(TAG, "copyFile start time :" + startTime);
             InputStream streamFrom = new FileInputStream(srcFile);

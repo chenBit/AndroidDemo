@@ -28,13 +28,11 @@ public class ViewUtil {
 
     public static void showToast(int contentId) {
         Toast toast = Toast.makeText(getContext(), contentId, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
 
     public static void showToast(String content) {
         Toast toast = Toast.makeText(getContext(), content, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
     public static void setTextDrawable(TextView view, int drawableId) {

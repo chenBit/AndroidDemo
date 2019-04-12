@@ -20,7 +20,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
     }
 
     /**
-     * 网络状态变化的接口
+     * 监听网络状态变化的接口
      */
     public interface NetEventListener {
         void onNetChange(int netWorkState);

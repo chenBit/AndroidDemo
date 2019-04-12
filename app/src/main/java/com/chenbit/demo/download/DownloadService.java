@@ -30,7 +30,7 @@ public class DownloadService extends Service implements NetworkChangeReceiver.Ne
     private static final String DEFAULT_DOWNLOAD_DIR = "AndroidDemo/Download";
     private NQDownloadManager mDownloadManager;
     private File mTempDownloadDir; //data/data/pkg name/app_download目录
-    private File mRealDonloadDir;
+    private File mRealDownloadDir;
     public static final int STATUS_DOWNLOADING = 100;
     public static final int STATUS_PAUSE = 101;
     public static final int STATUS_COMPLETED = 102;
@@ -63,10 +63,14 @@ public class DownloadService extends Service implements NetworkChangeReceiver.Ne
     }
 
     class DownloadBinder extends Binder {
-        public void setDownloadListener(DownloadListener listener) {
-            Log.e(TAG, "===setDownloadListener===");
-            mDownloadListener = listener;
+        DownloadService getService() {
+            return DownloadService.this;
         }
+    }
+
+    public void setDownloadListener(DownloadListener listener) {
+        Log.e(TAG, "===setDownloadListener===");
+        mDownloadListener = listener;
     }
 
     @Override
@@ -76,7 +80,7 @@ public class DownloadService extends Service implements NetworkChangeReceiver.Ne
         DemoApp.getNetListenerList().add(this);
         mDownloadManager = NQDownloadManager.getInstance();
         mTempDownloadDir = getDir(DATA_DOWNLOAD_DIR_NAME, Context.MODE_PRIVATE);
-        mRealDonloadDir = new File(Environment.getExternalStorageDirectory(), DEFAULT_DOWNLOAD_DIR);
+        mRealDownloadDir = new File(Environment.getExternalStorageDirectory(), DEFAULT_DOWNLOAD_DIR);
         mReDownloadSet = new HashSet<>();
         mHandler = new Handler();
     }
@@ -133,7 +137,7 @@ public class DownloadService extends Service implements NetworkChangeReceiver.Ne
 
             @Override
             public void onProgress(long finished, long total, int progress) {
-                Log.e(TAG, "finished: " + finished + "   total: " + total + "   progress: " + progress);
+//                Log.e(TAG, "finished: " + finished + "   total: " + total + "   progress: " + progress);
                 mDownloadListener.onProgress(appInfo.url, progress);
             }
 
@@ -217,10 +221,10 @@ public class DownloadService extends Service implements NetworkChangeReceiver.Ne
         new Thread(new Runnable() {
             @Override
             public void run() {
-                boolean result = FileUtils.moveFile(mTempDownloadDir, mRealDonloadDir, fileName);
+                boolean result = FileUtils.moveFile(mTempDownloadDir, mRealDownloadDir, fileName);
                 if (result) {
-                    String apkPath = mRealDonloadDir.getPath() + File.separator + fileName;
-                    Log.e(TAG, "==moveAndInstallApp==temp apk path:" + mTempDownloadDir.getPath() + "   real apk path: " + mRealDonloadDir.getPath() + "  file name: " + fileName);
+                    String apkPath = mRealDownloadDir.getPath() + File.separator + fileName;
+                    Log.e(TAG, "==moveAndInstallApp==temp apk path:" + mTempDownloadDir.getPath() + "   real apk path: " + mRealDownloadDir.getPath() + "  file name: " + fileName);
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setDataAndType(Uri.parse("file://" + apkPath), "application/vnd.android.package-archive");
                     startActivity(intent);
