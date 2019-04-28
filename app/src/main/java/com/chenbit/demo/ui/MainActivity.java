@@ -19,7 +19,6 @@ import android.os.Process;
 import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -34,14 +33,13 @@ import com.chenbit.demo.test.event.EventTestActivity;
 import com.chenbit.demo.test.hook.AnnotationTest;
 import com.chenbit.demo.test.hook.Hooker;
 import com.chenbit.demo.test.hook.TestAnnotation;
+import com.chenbit.demo.test.sso.TestSsoActivity;
 import com.chenbit.demo.utils.SimUtil;
 import com.cw.androidbase.sdk.receiver.NetworkChangeReceiver;
 import com.cw.androidbase.sdk.ui.activity.BaseActivity;
 import com.cw.androidbase.sdk.utils.AssetUtil;
 import com.cw.androidbase.sdk.utils.Util;
 import com.tdtech.devicemanager.TelephonyPolicy;
-
-import junit.framework.Test;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -90,11 +88,20 @@ public class MainActivity extends BaseActivity implements NetworkChangeReceiver.
 //                testAnnotation();
 //                testDialog();
 //                startKeepAliveActivity();
-                testBinder();
+//                testBinder();
+                isProcessExist(MainActivity.this, "com.nq.safelauncher");
             }
         });
         int id = SimUtil.getDefaultDataSubId(this);
-        Log.e(TAG,"===MainActivity===" + Process.myPid() + "===id===" + id);
+        Log.e(TAG, "===MainActivity===" + Process.myPid() + "===id===" + id);
+
+        findViewById(R.id.btnTestSso).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, TestSsoActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initDPM() {
@@ -106,9 +113,10 @@ public class MainActivity extends BaseActivity implements NetworkChangeReceiver.
         Intent intent = new Intent(this, EventTestActivity.class);
         startActivity(intent);
     }
-    private void testDialog(){
+
+    private void testDialog() {
         TestDialog dialog = new TestDialog();
-        dialog.show(getFragmentManager(),"ff");
+        dialog.show(getFragmentManager(), "ff");
     }
 
     private void go2DeviceAdmin() {
@@ -177,14 +185,14 @@ public class MainActivity extends BaseActivity implements NetworkChangeReceiver.
         Log.e(TAG, b);
     }
 
-    private void testReflect(){
+    private void testReflect() {
         Class<Hooker> hookerClass = Hooker.class;
         try {
             Field fuck = hookerClass.getDeclaredField("fuck");
             fuck.setAccessible(true);
             Hooker hooker = hookerClass.newInstance();
-            fuck.set(hooker,555);
-            Log.d("---", "==="+hooker.fuck);
+            fuck.set(hooker, 555);
+            Log.d("---", "===" + hooker.fuck);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -196,7 +204,7 @@ public class MainActivity extends BaseActivity implements NetworkChangeReceiver.
         seller.sell("香蕉");
     }
 
-    private void testBinder(){
+    private void testBinder() {
         Intent intent = new Intent(this, TestBinderService.class);
         startService(intent);
         bindService(intent, new ServiceConnection() {
@@ -217,14 +225,15 @@ public class MainActivity extends BaseActivity implements NetworkChangeReceiver.
         }, Context.BIND_AUTO_CREATE);
     }
 
-    private void testAnnotation(){
-        if(TestAnnotation.class.isAnnotationPresent(AnnotationTest.class)){
+    private void testAnnotation() {
+        if (TestAnnotation.class.isAnnotationPresent(AnnotationTest.class)) {
             AnnotationTest annotation = TestAnnotation.class.getAnnotation(AnnotationTest.class);
             int age = annotation.age();
             String value = annotation.value();
-            Log.d("---","===age:" + age + "===value: " + value);
+            Log.d("---", "===age:" + age + "===value: " + value);
         }
     }
+
     private void maybeLaunchProvisioning() {
         Intent intent = new Intent(ACTION_PROVISION_MANAGED_PROFILE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -340,7 +349,7 @@ public class MainActivity extends BaseActivity implements NetworkChangeReceiver.
         showToast("网络发生变化了：" + netWorkState);
     }
 
-    private  void initReceiver(){
+    private void initReceiver() {
         //创建广播
         InnerRecevier innerReceiver = new InnerRecevier();
         //动态注册广播
@@ -373,7 +382,7 @@ public class MainActivity extends BaseActivity implements NetworkChangeReceiver.
         }
     }
 
-    private  void initAmsBinder(){
+    private void initAmsBinder() {
         try {
             Class<?> amnClass = Class.forName("android.app.ActivityManagerNative");
             Object amn = amnClass.getMethod("getDefault").invoke(amnClass);
@@ -385,9 +394,23 @@ public class MainActivity extends BaseActivity implements NetworkChangeReceiver.
         }
     }
 
-    private void startKeepAliveActivity(){
+    private void startKeepAliveActivity() {
         Intent intent = new Intent(getApplicationContext(), KeepAliveActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    public boolean isProcessExist(Context contex, String pkg) {
+        ActivityManager activityManager = (ActivityManager) contex.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> processInfos = activityManager.getRunningAppProcesses();
+        if (processInfos != null) {
+            for (ActivityManager.RunningAppProcessInfo info : processInfos) {
+                Log.d(TAG,"===process name: " + info.processName);
+                if (pkg.equals(info.processName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

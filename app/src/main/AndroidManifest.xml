@@ -7,6 +7,7 @@
     <!-- 往sdcard中写入数据的权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
+    <uses-permission android:name="com.nationsky.emm.EMPTY_ACTIVITY_PERMISSION" />
 
     <application
         android:name=".app.DemoApp"
@@ -28,9 +29,7 @@
         </activity>
 
         <!-- 下载界面 -->
-        <activity
-            android:name=".download.DownloadActivity"
-            android:process=":remote">
+        <activity android:name=".download.DownloadActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,8 +38,7 @@
         </activity>
 
         <!-- 下载服务 -->
-        <service
-            android:name=".download.DownloadService"/>
+        <service android:name=".download.DownloadService" />
 
         <receiver android:name=".receiver.DpmReceiver">
             <meta-data
@@ -57,6 +55,7 @@
         </receiver>
 
         <activity android:name=".test.event.EventTestActivity" />
+        <activity android:name=".test.sso.TestSsoActivity" />
         <activity
             android:name=".ui.KeepAliveActivity"
             android:excludeFromRecents="true"
@@ -65,8 +64,8 @@
         <service
             android:name=".test.binder.TestBinderService"
             android:enabled="true"
-            android:process=":remote"
-            android:exported="true"/>
+            android:exported="true"
+            android:process=":remote" />
     </application>
 
 </manifest>

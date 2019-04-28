@@ -1,18 +1,18 @@
 package com.chenbit.demo.app;
 
 import android.os.Build;
-import android.os.Looper;
 import android.support.annotation.RequiresApi;
 
 import com.chenbit.demo.R;
 import com.chenbit.demo.db.DBConstants;
 import com.chenbit.demo.download.DownloadManager;
-import com.chenbit.demo.test.hook.Hooker;
 import com.cw.androidbase.sdk.app.BaseApp;
 import com.cw.androidbase.sdk.db.ITable;
 import com.cw.androidbase.sdk.utils.SSLUtil;
 import com.nationsky.downloadersdk.config.NQDownloadConfiguration;
 import com.nationsky.downloadersdk.core.NQDownloadManager;
+import com.nationsky.ssosdk.api.EmmSsoSDK;
+import com.nationsky.ssosdk.api.IEmmSsoManager;
 
 import java.util.List;
 
@@ -26,6 +26,7 @@ public class DemoApp extends BaseApp {
     protected void init() {
         initDownloader();
         initHooker();
+        initSsoSDK();
     }
 
     private void initDownloader() {
@@ -48,6 +49,15 @@ public class DemoApp extends BaseApp {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void initSsoSDK() {
+        EmmSsoSDK.init(getAppContext(), new IEmmSsoManager.OnLogoutListener() {
+            @Override
+            public void onLogout() {
+
+            }
+        });
     }
 
     @Override
